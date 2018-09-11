@@ -1,22 +1,37 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from shutil import copyfile
+import disdownload
 
 # HTTPRequestHandler class
 class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
-
   # GET
   def do_GET(self):
+        ##copy current hosts file to WebServer Dir for download
+        copyfile("files/hosts.txt", "scripts/WebServer/hosts.txt")
+
         # Send response status code
         self.send_response(200)
+        getpath = self.path ##dont think this is in http.server documentation, probs in BaseHttpServer, find requested path
 
         # Send headers
         self.send_header('Content-type','text/html')
         self.end_headers()
 
         # open file
-        message = open("scripts/WebServer/index.html",'r')
+        try:
+            message = open("scripts/WebServer/" + getpath,'r')
+
+        except:
+            try:
+                disdownload.download(getpath)
+                message = open("scripts/WebServer/" + getpath,'r')
+            except:
+                message = open("scripts/WebServer/404.html", 'r')
+
 
         # Write content as utf-8 data
         self.wfile.write(bytes(message.read(), "utf8"))
+        message.close()
         return
 
 
