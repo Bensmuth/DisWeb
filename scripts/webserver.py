@@ -23,7 +23,7 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
 def run():
   print('starting server...')
 
-  server_address = ('127.0.0.1', 8080) ##used 8080 as no root is required
+  server_address = ('127.0.0.1', 8081) ##used 8081 as no elevated perm is required
   httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
   print('running server...')
   httpd.serve_forever()

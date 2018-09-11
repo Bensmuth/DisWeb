@@ -2,9 +2,12 @@ import requests
 
 
 hosts = open("files/hosts.txt",'r')
-host = hosts.readline(1)
+host = hosts.readline().splitlines()
+print("host: " + host[0])
 
-
-url = 'http://google.com/favicon.ico'
+url = ("http://" + str(host[0]) + "/")
+print("url: " + url)
 r = requests.get(url, allow_redirects=True)
-open('google.ico', 'wb').write(r.content)
+open('scripts/WebServer/index.html', 'wb').write(r.content)
+
+hosts.close()
