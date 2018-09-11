@@ -13,7 +13,7 @@ def download(index):
             for y in range(1, len(index)-1): ##removes first backslash and makes first level dir TODO: add more dir levels support
                 if index[y] == "/":
                     index = index[1:]
-                    if not os.path.exists(directory):
+                    if not os.path.exists("scripts/WebServer/" + index[:y]):
                         os.makedirs("scripts/WebServer/" + index[:y])
 
             url = ("http://" + str(host[x]) + "/" + str(index))
@@ -26,7 +26,8 @@ def download(index):
             h = requests.get(url, allow_redirects=True)
             open('files/hosts.txt', 'wb').write(h.content)
 
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     hosts.close()
