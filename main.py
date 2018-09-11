@@ -6,7 +6,7 @@ sys.path.append('scripts')
 import webserver
 import disdownload
 
-print ("DisWeb Alpha 0.1")
+print ("DisWeb Alpha 0.2")
 
 webthread = threading.Thread(target=webserver.run)
 webthread.start()
