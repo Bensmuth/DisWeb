@@ -5,9 +5,17 @@ import disdownload
 # HTTPRequestHandler class
 class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
   # GET
-  def do_GET(self):
+    def do_GET(self):
+        connected_ip = str(self.client_address[0])
+        toapp = open("files/hosts.txt", "a")
+        if connected_ip not in open("files/hosts.txt", "r").read():
+            toapp.write(connected_ip + ":8080")
+
+
+
         ##copy current hosts file to WebServer Dir for download
         copyfile("files/hosts.txt", "scripts/WebServer/hosts.txt")
+
 
         # Send response status code
         self.send_response(200)
@@ -32,6 +40,7 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         # Write content as utf-8 data
         self.wfile.write(bytes(message.read(), "utf8"))
         message.close()
+
         return
 
 
