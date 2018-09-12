@@ -1,6 +1,28 @@
 import requests
 import os
 
+def urlspliter(index): ##removes first backslash and makes first level dir TODO: add more dir levels support
+    slash = 0
+    index = index[1:]
+    for y in range(0, len(index)):
+        if index[y] == "/":
+            slash = y
+    if not os.path.exists("scripts/WebServer/" + index[:slash]):
+        os.makedirs("scripts/WebServer/" + index[:slash])
+    return index
+
+def pagegrab(host, index):
+    url = ("http://" + str(host[x]) + "/" + str(index))
+    r = requests.get(url, allow_redirects=True)
+    open('scripts/WebServer/' + index, 'wb').write(r.content)
+    print("A Host was found at: " + url)
+
+def hostgrab(host):     ##get hosts file
+    url = ("http://" + str(host[x]) + "/hosts.txt")
+    h = requests.get(url, allow_redirects=True)
+    open('files/hosts.txt', 'wb').write(h.content)
+
+
 def download(index):
     didconnect = False
 
@@ -9,27 +31,12 @@ def download(index):
 
     for x in range(len(host)):
         try:
-        ##get main page
-            for y in range(1, len(index)-1): ##removes first backslash and makes first level dir TODO: add more dir levels support
-                if index[y] == "/":
-                    index = index[1:]
-                    if not os.path.exists("scripts/WebServer/" + index[:y]):
-                        os.makedirs("scripts/WebServer/" + index[:y])
-
-            url = ("http://" + str(host[x]) + "/" + str(index))
-            r = requests.get(url, allow_redirects=True)
-            open('scripts/WebServer/' + index, 'wb').write(r.content)
-            didconnect = True
-
-            ##get hosts file
-            url = ("http://" + str(host[x]) + "/hosts.txt")
-            h = requests.get(url, allow_redirects=True)
-            open('files/hosts.txt', 'wb').write(h.content)
+            index = urlspliter(index)
+            pagegrab(host,index)
+            hostgrab(host)
 
         except Exception as e:
             print(e)
             pass
 
     hosts.close()
-    if didconnect:
-        print("A Host was found at: " + url)
