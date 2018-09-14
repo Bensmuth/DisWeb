@@ -1,7 +1,7 @@
 import sys
 import threading
 import time
-##local imports
+# local imports
 sys.path.append('scripts')
 import webserver
 import disdownload

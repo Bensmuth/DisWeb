@@ -27,18 +27,18 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
 
         # open file
         try:
-            message = open("scripts/WebServer/" + getpath,'r')
+            message = open("scripts/WebServer/" + getpath,'rb')
 
         except:
             try:
                 disdownload.download(getpath)
-                message = open("scripts/WebServer/" + getpath,'r')
+                message = open("scripts/WebServer/" + getpath,'rb')
             except:
-                message = open("scripts/WebServer/404.html", 'r')
+                message = open("scripts/WebServer/404.html", 'rb')
 
 
-        # Write content as utf-8 data
-        self.wfile.write(bytes(message.read(), "utf8"))
+        # Write content as bytes
+        self.wfile.write(message.read())
         message.close()
 
         return
